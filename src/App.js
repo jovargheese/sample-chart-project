@@ -1,23 +1,26 @@
-import logo from './logo.svg';
+
+import { createRef, useRef, useState } from 'react';
 import './App.css';
+// import HrMonitor from './Component/HrMonitor';
+import HrMonitorChartJS from './Component/HrMonitorChartJS';
+
+
 
 function App() {
+const [active,setActive]=useState(false)
+const childRef = createRef(null);
+  const clickHandler=()=>{
+    setActive(pre=>!pre)
+  }
+  const downloadHandler = ()=>{
+    childRef.current.printDocument();
+    // console.log(childRef);
+  }
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      {!active&&<button onClick={clickHandler}>Get vital history</button>}
+     {active&& <button style={{marginLeft:'1rem'}} onClick={downloadHandler}>Download Report</button>}
+      {active&&<HrMonitorChartJS ref={childRef}/>}
     </div>
   );
 }
